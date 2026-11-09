@@ -273,16 +273,19 @@ function tick(){
   else if(phase==='run'&&S.warn>0&&sec<=S.warn&&S.tickWarn)beep(sec<=3?1000:600,sec<=3?200:90,sec<=3?1:.6)}
  render()}
 function start(){
- if(phase==='idle'){if(S.fsStart&&!document.fullscreenElement)fs();
+ if(phase==='idle'){if(S.fsStart&&!inFS())fs();
   try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)()}catch(e){}
   round=1;lock();enter(S.prep>0?'prep':'run')}
  else if(paused){paused=false;endAt=performance.now()+remMs;render()}
  else if(phase!=='end'){remMs=endAt-performance.now();paused=true;render()}}
 function reset(){unlock();phase='idle';paused=false;round=1;lastSec=-1;render()}
 function fs(){document.fullscreenElement?document.exitFullscreen():(app.requestFullscreen&&app.requestFullscreen().catch(()=>{}))}
-function showCtl(){const b=document.body;if(!document.fullscreenElement)return;b.classList.add('ctlshow');clearTimeout(ctlT);ctlT=setTimeout(()=>b.classList.remove('ctlshow'),2500)}
-document.addEventListener('fullscreenchange',()=>{document.body.classList.toggle('fs',!!document.fullscreenElement);document.activeElement&&document.activeElement.blur();showCtl()});
+const DMFS=matchMedia('(display-mode: fullscreen)');
+function inFS(){return !!document.fullscreenElement||DMFS.matches}
+function showCtl(){const b=document.body;if(!inFS())return;b.classList.add('ctlshow');clearTimeout(ctlT);ctlT=setTimeout(()=>b.classList.remove('ctlshow'),2500)}
+document.addEventListener('fullscreenchange',()=>{document.body.classList.toggle('fs',inFS());document.activeElement&&document.activeElement.blur();showCtl()});
 ['mousemove','pointerdown','touchstart'].forEach(ev=>document.addEventListener(ev,showCtl,{passive:true}));
+document.body.classList.toggle('fs',inFS());DMFS.addEventListener&&DMFS.addEventListener('change',()=>document.body.classList.toggle('fs',inFS()));
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(S.theme==='auto'){style();render()}});
 
 $('bGo').onclick=()=>send('go');$('bReset').onclick=()=>send('reset');$('bFs').onclick=fs;$('bM10').onclick=()=>send('m10');$('bP10').onclick=()=>send('p10');$('bRst').onclick=()=>send('rst');

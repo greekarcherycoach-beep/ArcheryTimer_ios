@@ -1,6 +1,6 @@
 // Archery Lab Timer – service worker
 // Άλλαξε το VERSION όταν θες να αναγκάσεις ανανέωση της cache.
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = 'archery-lab-timer-' + VERSION;
 const ASSETS = [
   './',

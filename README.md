@@ -23,3 +23,7 @@
 - `icons/` – 192, 512, maskable 512, apple-touch 180
 
 Σημείωση: ο έλεγχος service worker δουλεύει μόνο μέσω https (GitHub Pages) ή `localhost`, όχι με διπλό κλικ στο αρχείο.
+
+## Πλήρης οθόνη
+- Το manifest ζητά `fullscreen` (με fallback σε `standalone`). Σε Android/Chrome χρειάζεται **διαγραφή της παλιάς συντόμευσης και νέα εγκατάσταση** ώστε να διαβαστεί το νέο manifest.
+- Στο iPhone/iPad το «Προσθήκη στην οθόνη Αφετηρίας» ανοίγει χωρίς γραμμή Safari (standalone), αλλά το iOS δεν επιτρέπει πραγματικό fullscreen.
